@@ -27,4 +27,13 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            session()->flash('fail', $exception->validator->errors()->first());
+        }
+
+        return parent::render($request, $exception);
+    }
 }
